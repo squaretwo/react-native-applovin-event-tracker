@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import android.content.Intent;
+import android.util.Log;
 import com.applovin.sdk.*;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 
 public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule {
 
+  final String TAG = "RNApplovinEventTrackerModule";
 
   public RNApplovinEventTrackerModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -27,6 +29,7 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule {
     parameters.put(AppLovinEventParameters.USER_ACCOUNT_IDENTIFIER, userId);
 
     eventService.trackEvent(AppLovinEventTypes.USER_LOGGED_IN, parameters);
+    Log.d(TAG, "loginEvent userId:" + userId);
   }
 
   @ReactMethod
@@ -39,8 +42,8 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule {
 
     HashMap<String, String> purchaseData = new HashMap<String, String>();
     purchaseData.put("productId", detail.getString("productId"));
-    purchaseData.put("orderId", detail.getString("productId"));
-    purchaseData.put("purchaseToken", detail.getString("productId"));
+    purchaseData.put("orderId", detail.getString("orderId"));
+    purchaseData.put("purchaseToken", detail.getString("purchaseToken"));
     purchaseData.put("purchaseTime", detail.getString("purchaseTime"));
     purchaseData.put("purchaseState", detail.getString("purchaseState"));
 
@@ -49,12 +52,15 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule {
     intent.putExtra("INAPP_DATA_SIGNATURE", detail.getString("receiptSignature"));
 
     eventService.trackInAppPurchase(intent, parameters);
+    Log.d(TAG, "inAppPurchaseEvent amountOfMoneySpent:" + amountOfMoneySpent + ", currency:" + currency + ", detail.productId:" + detail.getString("productId") + ", detail.orderId:" + detail.getString("orderId") +
+                ", detail.purchaseToken:" + detail.getString("purchaseToken") + ", detail.purchaseTime:" + detail.getString("purchaseTime") + ", detail:purchaseState:" + detail.getString("purchaseState"));
   }
 
   @ReactMethod
   public void invitationEvent() {
     final AppLovinEventService eventService = AppLovinSdk.getInstance(getCurrentActivity()).getEventService();
     eventService.trackEvent(AppLovinEventTypes.USER_SENT_INVITATION);
+    Log.d(TAG, "invitationEvent");
   }
 
   @ReactMethod
@@ -66,6 +72,7 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule {
     parameters.put(AppLovinEventParameters.VIRTUAL_CURRENCY_NAME, currencyName);
 
     eventService.trackEvent(AppLovinEventTypes.USER_SPENT_VIRTUAL_CURRENCY, parameters);
+    Log.d(TAG, "spentVirtualCurrencyEvent currencyAmount:" + currencyAmount + ", currencyName:" + currencyName);
   }
 
   @Override
