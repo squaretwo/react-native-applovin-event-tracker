@@ -1,13 +1,16 @@
 package com.squaretwo.applovin.eventtracker;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+
+import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-import android.content.Intent;
-import android.util.Log;
 import com.applovin.sdk.*;
 
 import java.util.Map;
@@ -43,7 +46,6 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule imp
     parameters.put(AppLovinEventParameters.REVENUE_CURRENCY, currency);
 
     eventService.trackInAppPurchase(this.lastPurchaseIntent, parameters);
-    Log.d(TAG, "loginEvent amountOfMoneySpent:" + amountOfMoneySpent + ", currency:" + currency + ", intent:" + this.lastPurchaseIntent.toString());
   }
 
   @Override
