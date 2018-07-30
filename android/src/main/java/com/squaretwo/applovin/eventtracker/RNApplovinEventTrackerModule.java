@@ -51,9 +51,11 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule {
     intent.putExtra("INAPP_PURCHASE_DATA", purchaseData);
     intent.putExtra("INAPP_DATA_SIGNATURE", detail.getString("receiptSignature"));
 
-    eventService.trackInAppPurchase(intent, parameters);
     Log.d(TAG, "inAppPurchaseEvent amountOfMoneySpent:" + amountOfMoneySpent + ", currency:" + currency + ", detail.productId:" + detail.getString("productId") + ", detail.orderId:" + detail.getString("orderId") +
                 ", detail.purchaseToken:" + detail.getString("purchaseToken") + ", detail.purchaseTime:" + detail.getString("purchaseTime") + ", detail:purchaseState:" + detail.getString("purchaseState"));
+
+    eventService.trackInAppPurchase(intent, parameters);
+
   }
 
   @ReactMethod
