@@ -13,12 +13,14 @@ import com.applovin.sdk.*;
 import java.util.Map;
 import java.util.HashMap;
 
-public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule {
+public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
   final String TAG = "RNApplovinEventTrackerModule";
+  Intent lastPurchaseIntent = null;
 
   public RNApplovinEventTrackerModule(ReactApplicationContext reactContext) {
     super(reactContext);
+    reactContext.addActivityEventListener(this);
   }
 
   @ReactMethod
@@ -40,21 +42,17 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule {
     parameters.put(AppLovinEventParameters.REVENUE_AMOUNT, amountOfMoneySpent);
     parameters.put(AppLovinEventParameters.REVENUE_CURRENCY, currency);
 
-    HashMap<String, String> purchaseData = new HashMap<String, String>();
-    purchaseData.put("productId", detail.getString("productId"));
-    purchaseData.put("orderId", detail.getString("orderId"));
-    purchaseData.put("purchaseToken", detail.getString("purchaseToken"));
-    purchaseData.put("purchaseTime", detail.getString("purchaseTime"));
-    purchaseData.put("purchaseState", detail.getString("purchaseState"));
+    eventService.trackInAppPurchase(this.lastPurchaseIntent, parameters);
+    Log.d(TAG, "loginEvent amountOfMoneySpent:" + amountOfMoneySpent + ", currency:" + currency + ", intent:" + this.lastPurchaseIntent.toString());
+  }
 
-    Intent intent = new Intent();
-    intent.putExtra("INAPP_PURCHASE_DATA", purchaseData);
-    intent.putExtra("INAPP_DATA_SIGNATURE", detail.getString("receiptSignature"));
+  @Override
+  public void onActivityResult(final Activity activity, final int requestCode, final int resultCode, final Intent intent) {
+    this.lastPurchaseIntent = intent;
+  }
 
-    Log.d(TAG, "inAppPurchaseEvent amountOfMoneySpent:" + amountOfMoneySpent + ", currency:" + currency + ", detail.productId:" + detail.getString("productId") + ", detail.orderId:" + detail.getString("orderId") +
-                ", detail.purchaseToken:" + detail.getString("purchaseToken") + ", detail.purchaseTime:" + detail.getString("purchaseTime") + ", detail:purchaseState:" + detail.getString("purchaseState"));
-
-    eventService.trackInAppPurchase(intent, parameters);
+  @Override
+  public void onNewIntent(Intent intent){
 
   }
 
