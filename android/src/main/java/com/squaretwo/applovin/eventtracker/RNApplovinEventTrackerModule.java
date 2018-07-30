@@ -45,7 +45,10 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule imp
     parameters.put(AppLovinEventParameters.REVENUE_AMOUNT, amountOfMoneySpent);
     parameters.put(AppLovinEventParameters.REVENUE_CURRENCY, currency);
 
-    eventService.trackInAppPurchase(this.lastPurchaseIntent, parameters);
+    if (this.lastPurchaseIntent != null ) {
+      eventService.trackInAppPurchase(this.lastPurchaseIntent, parameters);
+      Log.d(TAG, "loginEvent amountOfMoneySpent:" + amountOfMoneySpent + ", currency:" + currency + ", intent:" + this.lastPurchaseIntent.toString());
+    }
   }
 
   @Override
