@@ -48,12 +48,15 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule imp
     if (this.lastPurchaseIntent != null ) {
       eventService.trackInAppPurchase(this.lastPurchaseIntent, parameters);
       Log.d(TAG, "inAppPurchaseEvent amountOfMoneySpent:" + amountOfMoneySpent + ", currency:" + currency + ", intent:" + this.lastPurchaseIntent.toString());
+      this.lastPurchaseIntent = null;
     }
   }
 
   @Override
   public void onActivityResult(final Activity activity, final int requestCode, final int resultCode, final Intent intent) {
-    this.lastPurchaseIntent = intent;
+    if (intent.getStringExtra("INAPP_PURCHASE_DATA") != null) {
+       this.lastPurchaseIntent = intent;
+    }
   }
 
   @Override
