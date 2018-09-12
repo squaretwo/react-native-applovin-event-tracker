@@ -28,6 +28,10 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule imp
 
   @ReactMethod
   public void loginEvent(String userId) {
+    Activity activity = getCurrentActivity();
+    if (activity == null) {
+      return;
+    }
     final AppLovinEventService eventService = AppLovinSdk.getInstance(getCurrentActivity()).getEventService();
 
     final Map<String, String> parameters = new HashMap<String, String>();
@@ -39,6 +43,10 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule imp
 
   @ReactMethod
   public void inAppPurchaseEvent(String amountOfMoneySpent, String currency, ReadableMap detail) {
+    Activity activity = getCurrentActivity();
+    if (activity == null) {
+      return;
+    }
     final AppLovinEventService eventService = AppLovinSdk.getInstance(getCurrentActivity()).getEventService();
 
     final Map<String, String> parameters = new HashMap<String, String>();
@@ -66,6 +74,10 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule imp
 
   @ReactMethod
   public void invitationEvent() {
+    Activity activity = getCurrentActivity();
+    if (activity == null) {
+      return;
+    }
     final AppLovinEventService eventService = AppLovinSdk.getInstance(getCurrentActivity()).getEventService();
     eventService.trackEvent(AppLovinEventTypes.USER_SENT_INVITATION);
     Log.d(TAG, "invitationEvent");
@@ -73,6 +85,10 @@ public class RNApplovinEventTrackerModule extends ReactContextBaseJavaModule imp
 
   @ReactMethod
   public void spentVirtualCurrencyEvent(String currencyAmount, String currencyName) {
+    Activity activity = getCurrentActivity();
+    if (activity == null) {
+      return;
+    }
     final AppLovinEventService eventService = AppLovinSdk.getInstance(getCurrentActivity()).getEventService();
 
     final Map<String, String> parameters = new HashMap<String, String>();
